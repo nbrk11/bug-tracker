@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BugTracker.Api/BugTracker.Api.csproj" />
+  <Project Path="BugTracker.Application/BugTracker.Application.csproj" />
+  <Project Path="BugTracker.Domain/BugTracker.Domain.csproj" />
+  <Project Path="BugTracker.Infrastructure/BugTracker.Infrastructure.csproj" />
+</Solution>
