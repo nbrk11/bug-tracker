@@ -20,8 +20,10 @@ public enum IssuePriority
 public class Issue
 {
     public int Id { get; set;}
+    public int ProjectId { get; set; }
+    public Project Project { get; set; }
     public string Description { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
     public IssueStatus Status { get; set; } = IssueStatus.OPEN;
     public IssuePriority Priority { get; set; } = IssuePriority.MEDIUM;
-    public DateTime CreatedDate { get; set; } = DateTime.Now;
 }
