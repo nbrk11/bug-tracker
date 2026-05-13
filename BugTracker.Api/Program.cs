@@ -15,19 +15,11 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 builder.Services.AddOpenApi();
 
-// builder.Services.AddOpenApiDocument(config =>
-// {
-//     config.DocumentName = "BugTracker";
-//     config.Title = "BugTracker API";
-//     config.Version = "v1";
-// });
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    // app.UseOpenApi();
-    // app.UseSwaggerUi();
     app.MapOpenApi();
     app.MapScalarApiReference();
 }

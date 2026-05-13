@@ -1,6 +1,5 @@
 using BugTracker.Domain;
 using BugTracker.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Api;
@@ -19,10 +18,5 @@ public static class ProjectEndpoints
             await db.Projects.AddAsync(project);
             await db.SaveChangesAsync();
         });
-    }
-
-    private static bool ValidateEnum(string name, Type enumType)
-    {
-        return enumType.GetEnumNames().Contains(name);
     }
 }
