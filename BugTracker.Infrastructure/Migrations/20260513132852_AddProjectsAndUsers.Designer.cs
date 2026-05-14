@@ -3,6 +3,7 @@ using System;
 using BugTracker.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BugTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    partial class BugTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260513132852_AddProjectsAndUsers")]
+    partial class AddProjectsAndUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,7 +124,7 @@ namespace BugTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id")
@@ -158,7 +161,9 @@ namespace BugTracker.Infrastructure.Migrations
                 {
                     b.HasOne("BugTracker.Domain.Project", "Project")
                         .WithMany("Users")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Project");
                 });

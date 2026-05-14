@@ -11,6 +11,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.KebabCaseLower, false));
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
 builder.Services.AddOpenApi();
@@ -28,5 +29,6 @@ app.MapGet("/", () => "Hello World!");
 
 IssueEndpoints.Map(app);
 ProjectEndpoints.Map(app);
+UserEndpoints.Map(app);
 
 app.Run();

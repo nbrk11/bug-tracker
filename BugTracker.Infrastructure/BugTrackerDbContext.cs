@@ -36,8 +36,7 @@ public class BugTrackerDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasOne(u => u.Project)
             .WithMany(p => p.Users)
-            .HasForeignKey(u => u.ProjectId)
-            .IsRequired();
+            .HasForeignKey(u => u.ProjectId);
 
         modelBuilder.Entity<Comment>()
             .HasOne(c => c.Author)
