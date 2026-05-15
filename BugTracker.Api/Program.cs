@@ -16,7 +16,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 builder.Services.AddOpenApi();
 
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -30,5 +29,6 @@ app.MapGet("/", () => "Hello World!");
 IssueEndpoints.Map(app);
 ProjectEndpoints.Map(app);
 UserEndpoints.Map(app);
+CommentEndpoints.Map(app);
 
 app.Run();

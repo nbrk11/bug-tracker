@@ -4,13 +4,11 @@ namespace BugTracker.Domain;
 
 public class Comment
 {
-    [JsonIgnore]
     public int Id { get; set;}
     public string Content { get; set; } = string.Empty;
-    public DateTime CreatedDate { get; set; }
-    [JsonIgnore]
+    // In the future the user's timezone info will be needed to properly convert it to local time
+    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public int? AuthorId { get; set;}
-    [JsonIgnore]
     public User? Author { get; set;}
     // TODO: Add relation to the Issues
 }

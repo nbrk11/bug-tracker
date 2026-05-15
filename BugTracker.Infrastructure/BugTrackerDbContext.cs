@@ -42,7 +42,7 @@ public class BugTrackerDbContext : DbContext
             .HasOne(c => c.Author)
             .WithMany(u => u.Comments)
             .HasForeignKey(c => c.AuthorId)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.SetNull);
     }
 
     public DbSet<Project> Projects { get; set; }

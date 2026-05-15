@@ -3,6 +3,11 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+DOCS.md
+
+# C# Dev Kit stuff
+*.lscache
+
 # dotenv files
 .env
 
