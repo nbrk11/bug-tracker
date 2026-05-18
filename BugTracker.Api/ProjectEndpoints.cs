@@ -1,3 +1,4 @@
+using BugTracker.Application.Interfaces;
 using BugTracker.Domain;
 using BugTracker.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -19,21 +20,17 @@ public static class ProjectEndpoints
             await db.SaveChangesAsync();
         });
 
-        app.MapDelete("/project/{id}", async (int id, BugTrackerDbContext db) =>
+        app.MapDelete("/project/{id}", async (int id, IProjectService service) =>
         {
             // delete project
             // what about its' users?
             // users can be reassigned to another project, but in the mean time they have just no project at all (NULL)
-            var project = await db.Projects.Include(p => p.Issues).FirstOrDefaultAsync(p => p.Id == id);
+            var result = await service.Delete(id);
 
-            if (project is null)
-                return Results.NotFound($"No project with {id} was found.");
+            if (!result.IsSuccess)
+                return Results.NotFound(result);
 
-            db.Remove(project);
-
-            var result = await db.SaveChangesAsync();
-
-            return Results.Ok($"Project with id = {id} was deleted.\n{result} number of entities were deleted.");
+            return Results.Ok($"Project with id = {id} was deleted.\n{result.Value} number of entities were deleted.");
         });
     }
 }

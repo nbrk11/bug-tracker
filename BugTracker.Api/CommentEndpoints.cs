@@ -1,6 +1,7 @@
 using BugTracker.Domain;
 using BugTracker.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using BugTracker.Application.DTOs;
 
 namespace BugTracker.Api;
 

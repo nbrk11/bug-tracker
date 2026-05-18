@@ -1,4 +1,4 @@
-using BugTracker.Api.DTOs;
+using BugTracker.Application.DTOs;
 using BugTracker.Domain;
 using BugTracker.Infrastructure;
 using Microsoft.EntityFrameworkCore;

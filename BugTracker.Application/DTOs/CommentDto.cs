@@ -1,4 +1,4 @@
-namespace BugTracker.Api;
+namespace BugTracker.Application.DTOs;
 
 public class CommentDto
 {

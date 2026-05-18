@@ -1,4 +1,4 @@
-namespace BugTracker.Api.DTOs;
+namespace BugTracker.Application.DTOs;
 
 public class UserDto
 {
