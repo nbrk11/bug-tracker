@@ -9,7 +9,8 @@ using BugTracker.Infrastructure.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IProjectsService, ProjectsService>();
+builder.Services.AddScoped<IIssuesService, IssuesService>();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {

@@ -1,6 +1,7 @@
 using BugTracker.Domain;
+using Microsoft.AspNetCore.Http;
 
-namespace BugTracker.Api;
+namespace BugTracker.Application.Queries;
 
 public class IssueFilterQuery
 {

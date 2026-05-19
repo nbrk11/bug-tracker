@@ -5,21 +5,21 @@ using BugTracker.Application;
 
 namespace BugTracker.Infrastructure.Services;
 
-public class ProjectService : IProjectService
+public class ProjectsService : IProjectsService
 {
     private BugTrackerDbContext _db;
 
-    public ProjectService(BugTrackerDbContext db)
+    public ProjectsService(BugTrackerDbContext db)
     {
         _db = db;
     }
 
-    public async Task Create(ProjectDto projectDto)
+    public async Task CreateAsync(ProjectDto projectDto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ResponseWrapper<int>> Delete(int id)
+    public async Task<ResponseWrapper<int>> DeleteAsync(int id)
     {
         var project = await _db.Projects.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -34,17 +34,17 @@ public class ProjectService : IProjectService
         return ResponseWrapper<int>.Success(result);
     }
 
-    public Task ReadAll()
+    public Task ReadAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task ReadById(int id)
+    public Task ReadByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task Update(ProjectDto projectDto, int id)
+    public Task UpdateAsync(ProjectDto projectDto, int id)
     {
         throw new NotImplementedException();
     }

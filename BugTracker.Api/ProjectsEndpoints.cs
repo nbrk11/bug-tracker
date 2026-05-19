@@ -46,12 +46,12 @@ public static class ProjectsEndpoints
         return Results.Created();
     }
 
-    private static async Task<IResult> DeleteProjectById(int id, IProjectService projectService)
+    private static async Task<IResult> DeleteProjectById(int id, IProjectsService projectService)
     {
         // delete project
         // what about its' users?
         // users can be reassigned to another project, but in the mean time they have just no project at all (NULL)
-        var result = await projectService.Delete(id);
+        var result = await projectService.DeleteAsync(id);
 
         if (!result.IsSuccess)
             return Results.NotFound(result);
