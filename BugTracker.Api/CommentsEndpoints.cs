@@ -57,7 +57,7 @@ public static class CommentsEndpoints
             comments = comments.Where(c => c.CreatedDate >= filter.DateFrom);
 
         if (filter.DateTo is not null)
-            comments = comments.Where(c => filter.DateTo >= filter.DateTo);
+            comments = comments.Where(c => filter.DateTo >= c.CreatedDate);
 
         var res = await comments.ToArrayAsync();
 
