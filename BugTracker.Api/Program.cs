@@ -29,9 +29,9 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/", () => "Hello World!");
 
-IssueEndpoints.Map(app);
-ProjectEndpoints.Map(app);
-UserEndpoints.Map(app);
-CommentEndpoints.Map(app);
+IssuesEndpoints.Map(app);
+ProjectsEndpoints.Map(app);
+UsersEndpoints.Map(app);
+CommentsEndpoints.Map(app);
 
 app.Run();
