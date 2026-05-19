@@ -46,7 +46,7 @@ public class IssuesService : IIssuesService
                 Description = i.Description,
                 Priority = i.Priority,
                 Status = i.Status,
-                CreatedDate = i.CreatedDate    
+                CreatedDate = i.CreatedDate
             })
             .ToListAsync();
 
@@ -64,7 +64,7 @@ public class IssuesService : IIssuesService
                 Description = i.Description,
                 Priority = i.Priority,
                 Status = i.Status,
-                CreatedDate = i.CreatedDate    
+                CreatedDate = i.CreatedDate
             })
             .FirstOrDefaultAsync();
 
@@ -95,7 +95,7 @@ public class IssuesService : IIssuesService
         if (filter.DateTo is not null)
             filteredIssues = filteredIssues.Where(i => filter.DateTo > i.CreatedDate);
 
-    returnResult:
+        returnResult:
         result = await filteredIssues
             .Select(i => new IssueDto
             {
@@ -103,7 +103,7 @@ public class IssuesService : IIssuesService
                 Description = i.Description,
                 Priority = i.Priority,
                 Status = i.Status,
-                CreatedDate = i.CreatedDate    
+                CreatedDate = i.CreatedDate
             })
             .ToListAsync();
         return ResponseWrapper<List<IssueDto>>.Success(result);

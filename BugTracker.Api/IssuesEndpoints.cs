@@ -1,7 +1,6 @@
 using BugTracker.Application.DTOs;
 using BugTracker.Application.Interfaces;
 using BugTracker.Application.Queries;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BugTracker.Api;
 
@@ -20,13 +19,13 @@ public static class IssuesEndpoints
         group.MapGet("/{id}", GetIssueById);
         group.MapGet("/filter", GetFilteredIssues);
         group.MapPost("/", CreateIssue);
-        
+
         return group;
     }
 
     private static async Task<IResult> GetAllIssues(IIssuesService issuesService)
     {
-        var issues = await issuesService.ReadAllAsync(); 
+        var issues = await issuesService.ReadAllAsync();
         // add check for failure
 
         return Results.Ok(issues.Value);
@@ -35,7 +34,7 @@ public static class IssuesEndpoints
     private static async Task<IResult> GetIssueById(int id, IIssuesService issuesService)
     {
         var issue = await issuesService.ReadByIdAsync(id);
-        
+
         if (!issue.IsSuccess)
             return Results.NotFound(issue.Error);
 

@@ -3,7 +3,7 @@ namespace BugTracker.Application;
 public class ResponseWrapper<T>
 {
     public T? Value { get; }
-    public string? Error { get; } 
+    public string? Error { get; }
     public bool IsSuccess => Error is null;
 
     private ResponseWrapper(T value) => Value = value;

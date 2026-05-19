@@ -16,7 +16,7 @@ public static class UsersEndpoints
 
     public static RouteGroupBuilder MapUsers(this RouteGroupBuilder group)
     {
-        group.MapGet("/", GetAllUsers);        
+        group.MapGet("/", GetAllUsers);
         group.MapGet("/{id}", GetUserById);
         group.MapPost("/", CreateUser);
         group.MapDelete("/{id}", DeleteUserById);

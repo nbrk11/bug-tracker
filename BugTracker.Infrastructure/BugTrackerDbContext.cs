@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Infrastructure;
 
-public class BugTrackerDbContext : DbContext 
+public class BugTrackerDbContext : DbContext
 {
     public BugTrackerDbContext(DbContextOptions<BugTrackerDbContext> options) : base(options)
     {
@@ -48,5 +48,5 @@ public class BugTrackerDbContext : DbContext
     public DbSet<Project> Projects { get; set; }
     public DbSet<Issue> Issues { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Comment> Comments { get; set; } 
+    public DbSet<Comment> Comments { get; set; }
 }

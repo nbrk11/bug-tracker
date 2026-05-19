@@ -25,9 +25,9 @@ public class ProjectsService : IProjectsService
 
         if (project is null)
         {
-            return ResponseWrapper<int>.Fail($"Project with {id} id was not found");    
+            return ResponseWrapper<int>.Fail($"Project with {id} id was not found");
         }
-        
+
         _db.Projects.Remove(project);
         var result = await _db.SaveChangesAsync();
 

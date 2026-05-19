@@ -24,7 +24,7 @@ public enum IssuePriority
 
 public class Issue
 {
-    public int Id { get; set;}
+    public int Id { get; set; }
     [JsonIgnore]
     public int ProjectId { get; set; }
     [JsonIgnore]
