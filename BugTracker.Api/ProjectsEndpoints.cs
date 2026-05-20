@@ -24,9 +24,11 @@ public static class ProjectsEndpoints
         return group;
     }
 
-    private static async Task<List<Project>> GetAllProjects(BugTrackerDbContext db)
+    private static async Task<IResult> GetAllProjects(BugTrackerDbContext db)
     {
-        return await db.Projects.Include(p => p.Issues).Include(p => p.Users).ToListAsync();
+        var projects = await db.Projects.Include(p => p.Issues).Include(p => p.Users).ToListAsync();
+
+        return Results.Ok(projects);
     }
 
     private static async Task<IResult> GetProjectById(int id, BugTrackerDbContext db)

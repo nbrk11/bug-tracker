@@ -2,8 +2,6 @@
 
 namespace BugTracker.Domain;
 
-#nullable disable
-
 public enum IssueStatus
 {
     NONE = -1,
@@ -25,12 +23,10 @@ public enum IssuePriority
 public class Issue
 {
     public int Id { get; set; }
-    [JsonIgnore]
     public int ProjectId { get; set; }
-    [JsonIgnore]
-    public Project Project { get; set; }
-    public string Description { get; set; }
-    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public Project? Project { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public IssueStatus Status { get; set; } = IssueStatus.OPEN;
     public IssuePriority Priority { get; set; } = IssuePriority.MEDIUM;
 }
