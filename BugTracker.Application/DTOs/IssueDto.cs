@@ -8,5 +8,5 @@ public class IssueDto
     public string Description { get; set; } = string.Empty;
     public IssueStatus Status { get; set; }
     public IssuePriority Priority { get; set; }
-    public DateTime CreatedDate { get; init; }
+    public DateTimeOffset CreatedDate { get; init; }
 }

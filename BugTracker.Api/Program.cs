@@ -3,14 +3,10 @@ using BugTracker.Api;
 using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using BugTracker.Application.Interfaces;
-using BugTracker.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddScoped<IProjectsService, ProjectsService>();
-builder.Services.AddScoped<IIssuesService, IssuesService>();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {

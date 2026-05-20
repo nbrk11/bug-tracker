@@ -1,7 +1,5 @@
+using BugTracker.Application.DTOs;
 using BugTracker.Application.Interfaces;
-using BugTracker.Domain;
-using BugTracker.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Api;
 
@@ -24,26 +22,29 @@ public static class ProjectsEndpoints
         return group;
     }
 
-    private static async Task<IResult> GetAllProjects(BugTrackerDbContext db)
+    private static async Task<IResult> GetAllProjects(IProjectsService projectsService)
     {
-        var projects = await db.Projects.Include(p => p.Issues).Include(p => p.Users).ToListAsync();
+        var response = await projectsService.ReadAllAsync(); 
 
-        return Results.Ok(projects);
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> GetProjectById(int id, BugTrackerDbContext db)
+    private static async Task<IResult> GetProjectById(int id, IProjectsService projectsService)
     {
-        var project = await db.Projects.FirstOrDefaultAsync(p => p.Id == id);
-        if (project is null)
-            return Results.NotFound(null);
+        var response = await projectsService.ReadByIdAsync(id);
 
-        return Results.Ok(project);
+        if (!response.IsSuccess)
+            return Results.NotFound(response.Error);
+
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> CreateProject(Project project, BugTrackerDbContext db)
+    private static async Task<IResult> CreateProject(ProjectDto project, IProjectsService projectsService)
     {
-        await db.Projects.AddAsync(project);
-        await db.SaveChangesAsync();
+        var response = await projectsService.CreateAsync(project);
+
+        if (!response.IsSuccess)
+            return Results.InternalServerError(response.Error);
 
         return Results.Created();
     }
@@ -53,11 +54,11 @@ public static class ProjectsEndpoints
         // delete project
         // what about its' users?
         // users can be reassigned to another project, but in the mean time they have just no project at all (NULL)
-        var result = await projectService.DeleteAsync(id);
+        var response = await projectService.DeleteAsync(id);
 
-        if (!result.IsSuccess)
-            return Results.NotFound(result);
+        if (!response.IsSuccess)
+            return Results.NotFound(response);
 
-        return Results.Ok($"Project with id = {id} was deleted.\n{result.Value} number of entities were deleted.");
+        return Results.Ok($"Project with id = {id} was deleted.\n{response.Value} number of entities were deleted.");
     }
 }
