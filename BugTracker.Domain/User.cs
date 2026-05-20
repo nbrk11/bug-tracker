@@ -10,6 +10,7 @@ public class User
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public int? ProjectId { get; set; }
+    public DateTimeOffset CreatedDate { get; set; }
     public Project? Project { get; set; }
     public ICollection<Comment> Comments { get; set; } = [];
 }

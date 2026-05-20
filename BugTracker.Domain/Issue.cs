@@ -26,7 +26,7 @@ public class Issue
     public int ProjectId { get; set; }
     public Project? Project { get; set; }
     public string Description { get; set; } = string.Empty;
-    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset CreatedDate { get; set; }
     public IssueStatus Status { get; set; } = IssueStatus.OPEN;
     public IssuePriority Priority { get; set; } = IssuePriority.MEDIUM;
 }

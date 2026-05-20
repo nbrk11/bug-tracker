@@ -25,13 +25,31 @@ public class BugTrackerDbContext : DbContext
             .HasKey(i => i.Id)
             .HasName("PK_IssueId");
 
+        modelBuilder.Entity<Issue>()
+            .Property(i => i.CreatedDate)
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .ValueGeneratedOnAdd();
+
         modelBuilder.Entity<User>()
             .HasKey(u => u.Id)
             .HasName("PK_UserId");
 
+        modelBuilder.Entity<User>()
+            .Property(u => u.CreatedDate)
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .ValueGeneratedOnAdd();
+
         modelBuilder.Entity<Comment>()
             .HasKey(c => c.Id)
             .HasName("PK_CommentId");
+
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.CreatedDate)
+            .HasColumnType("timestamp with time zone")
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Project>()
             .HasMany(p => p.Issues)
