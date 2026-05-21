@@ -2,6 +2,8 @@ using BugTracker.Domain;
 using BugTracker.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using BugTracker.Application.DTOs;
+using BugTracker.Application.Interfaces;
+using BugTracker.Application.Queries;
 
 namespace BugTracker.Api;
 
@@ -26,83 +28,64 @@ public static class CommentsEndpoints
         return group;
     }
 
-    private static async Task<IResult> GetAllComments(BugTrackerDbContext db)
+    private static async Task<IResult> GetAllComments(ICommentsService commentsService)
     {
-        var comments = await db.Comments.Select(c => c).ToListAsync();
+        var response = await commentsService.ReadAllAsync();
 
-        return Results.Ok(comments);
+        if (!response.IsSuccess)
+            return Results.InternalServerError(response.Error);
+
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> GetCommentById(int id, BugTrackerDbContext db)
+    private static async Task<IResult> GetCommentById(int id, ICommentsService commentsService)
     {
-        var comment = await db.Comments.FirstOrDefaultAsync(c => c.Id == id);
+        var response = await commentsService.ReadByIdAsync(id);
 
-        if (comment is null)
-            return Results.NotFound($"Comment with id {id} is not found");
+        if (!response.IsSuccess)
+            return Results.InternalServerError(response.Error);
 
-        return Results.Ok(comment);
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> GetFilteredComments(CommentFilterQuery filter, BugTrackerDbContext db)
+    private static async Task<IResult> GetFilteredComments(CommentFilterQuery filter, ICommentsService commentsService)
     {
-        var comments = db.Comments.AsNoTracking();
+        var response = await commentsService.ReadFilteredAsync(filter);
 
-        if (filter is null)
-            return Results.Ok(await comments.ToListAsync());
+        if (!response.IsSuccess)
+            return Results.InternalServerError(response.Error);
 
-        if (filter.AuthorId is not null)
-            comments = comments.Where(c => c.AuthorId == filter.AuthorId);
+        return Results.Ok(response.Value);
 
-        if (filter.DateFrom is not null)
-            comments = comments.Where(c => c.CreatedDate >= filter.DateFrom);
-
-        if (filter.DateTo is not null)
-            comments = comments.Where(c => filter.DateTo >= c.CreatedDate);
-
-        var res = await comments.ToArrayAsync();
-
-        return Results.Ok(res);
     }
 
-    private static async Task<IResult> CreateComment(CommentDto c, BugTrackerDbContext db)
+    private static async Task<IResult> CreateComment(CommentDto commentDto, ICommentsService commentsService)
     {
-        var comment = new Comment
-        {
-            Content = c.Content,
-        };
+        var response = await commentsService.CreateAsync(commentDto);
 
-        await db.Comments.AddAsync(comment);
-        await db.SaveChangesAsync();
+        if (!response.IsSuccess)
+            return Results.InternalServerError(response.Error);
 
-        return Results.Created();
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> DeleteCommentById(int id, BugTrackerDbContext db)
+    private static async Task<IResult> DeleteCommentById(int id, ICommentsService commentsService)
     {
-        var comment = await db.Comments.FirstOrDefaultAsync(c => c.Id == id);
+        var response = await commentsService.DeleteAsync(id);
 
-        if (comment is null)
-            return Results.NotFound($"Comment with id {id} is not found");
+        if (!response.IsSuccess)
+            return Results.InternalServerError(response.Error);
 
-        db.Comments.Remove(comment);
-
-        await db.SaveChangesAsync();
-
-        return Results.Ok();
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> UpdateCommentById(int id, CommentDto commentDto, BugTrackerDbContext db)
+    private static async Task<IResult> UpdateCommentById(int id, CommentDto commentDto, ICommentsService commentsService)
     {
-        var comment = await db.Comments.FirstOrDefaultAsync(c => c.Id == id);
+        var response = await commentsService.UpdateAsync(commentDto, id);
 
-        if (comment is null)
-            return Results.NotFound($"Comment with id {id} not found.");
+        if (!response.IsSuccess)
+            return Results.InternalServerError(response.Error);
 
-        if (commentDto.Content is not null)
-            comment.Content = commentDto.Content;
-
-        await db.SaveChangesAsync();
-
-        return Results.Ok();
+        return Results.Ok(response.Value);
     }
 }

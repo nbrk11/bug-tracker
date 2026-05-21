@@ -1,4 +1,6 @@
-namespace BugTracker.Api;
+using Microsoft.AspNetCore.Http;
+
+namespace BugTracker.Application.Queries;
 
 public class CommentFilterQuery
 {
