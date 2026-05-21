@@ -19,7 +19,7 @@ public class ProjectsService : IProjectsService
     {
         var project = new Project
         {
-            Title = projectDto.Title,   
+            Title = projectDto.Title,
         };
 
         await _db.Projects.AddAsync(project);

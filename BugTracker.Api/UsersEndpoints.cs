@@ -1,7 +1,5 @@
 using BugTracker.Application.DTOs;
-using BugTracker.Domain;
-using BugTracker.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using BugTracker.Application.Interfaces;
 
 namespace BugTracker.Api;
 
@@ -25,68 +23,52 @@ public static class UsersEndpoints
         return group;
     }
 
-    private static async Task<IResult> GetAllUsers(BugTrackerDbContext db)
+    private static async Task<IResult> GetAllUsers(IUsersService userService)
     {
-        var users = await db.Users.AsNoTracking().Include(u => u.Comments).ToListAsync();
-        return Results.Ok(users);
+        var response = await userService.ReadAllAsync();
+
+        if (!response.IsSuccess)
+            return Results.NotFound(response.Error);
+
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> GetUserById(int id, BugTrackerDbContext db)
+    private static async Task<IResult> GetUserById(int id, IUsersService userService)
     {
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
-        if (user is null)
-            return Results.NotFound();
+        var response = await userService.ReadByIdAsync(id);
 
-        return Results.Ok(user);
+        if (!response.IsSuccess)
+            return Results.NotFound(response.Error);
+
+        return Results.Ok(response.Value);
     }
 
-    private static async Task<IResult> CreateUser(User user, BugTrackerDbContext db)
+    private static async Task<IResult> CreateUser(UserDto userDto, IUsersService userService)
     {
-        await db.Users.AddAsync(user);
-        await db.SaveChangesAsync();
+        var response = await userService.CreateAsync(userDto);
+
+        if (!response.IsSuccess)
+            return Results.NotFound(response.Error);
 
         return Results.Created();
     }
 
-    private static async Task<IResult> DeleteUserById(int id, BugTrackerDbContext db)
+    private static async Task<IResult> DeleteUserById(int id, IUsersService userService)
     {
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var response = await userService.DeleteAsync(id);
 
-        if (user is null)
-            return Results.NotFound();
+        if (!response.IsSuccess)
+            return Results.NotFound(response.Error);
 
-        db.Users.Remove(user);
-        var result = await db.SaveChangesAsync();
-
-        return Results.Ok($"User with id {id} was deleted.\n{result} number of rows were affected.\n");
+        return Results.Ok($"User with id {id} was deleted.\n{response.Value} number of rows were affected.\n");
     }
 
-    private static async Task<IResult> UpdateUserById(int id, UserDto userDto, BugTrackerDbContext db)
+    private static async Task<IResult> UpdateUserById(int id, UserDto userDto, IUsersService userService)
     {
-        var user = await db.Users.Include(u => u.Comments).FirstOrDefaultAsync(u => u.Id == id);
+        var response = await userService.UpdateAsync(userDto, id);
 
-        if (user is null)
-            return Results.NotFound($"No user with {id} was found.");
-
-        if (userDto.FirstName is not null)
-            user.FirstName = userDto.FirstName;
-        if (userDto.LastName is not null)
-            user.LastName = userDto.LastName;
-        if (userDto.Email is not null)
-            user.Email = userDto.Email;
-        if (userDto.ProjectId is not null)
-        {
-            var project = await db.Projects.FirstOrDefaultAsync(p => p.Id == userDto.ProjectId);
-
-            if (project is null)
-                return Results.NotFound($"No project with {userDto.ProjectId} was found.");
-
-            user.ProjectId = userDto.ProjectId;
-            user.Project = project;
-            project.Users.Add(user);
-        }
-
-        await db.SaveChangesAsync();
+        if (!response.IsSuccess)
+            return Results.NotFound(response.Error);
 
         return Results.NoContent();
     }

@@ -24,7 +24,7 @@ public static class ProjectsEndpoints
 
     private static async Task<IResult> GetAllProjects(IProjectsService projectsService)
     {
-        var response = await projectsService.ReadAllAsync(); 
+        var response = await projectsService.ReadAllAsync();
 
         return Results.Ok(response.Value);
     }
