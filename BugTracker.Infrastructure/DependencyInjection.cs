@@ -1,5 +1,4 @@
 using BugTracker.Application.Interfaces;
-using BugTracker.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,10 +12,7 @@ public static class DependencyInjection
         services.AddDbContext<BugTrackerDbContext>(opt =>
             opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddScoped<IIssuesService, IssuesService>();
-        services.AddScoped<IProjectsService, ProjectsService>();
-        services.AddScoped<IUsersService, UsersService>();
-        services.AddScoped<ICommentsService, CommentsService>();
+        services.AddScoped<IBugTrackerDbContext, BugTrackerDbContext>();
 
         return services;
     }

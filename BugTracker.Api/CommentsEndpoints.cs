@@ -1,6 +1,3 @@
-using BugTracker.Domain;
-using BugTracker.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using BugTracker.Application.DTOs;
 using BugTracker.Application.Interfaces;
 using BugTracker.Application.Queries;

@@ -1,9 +1,10 @@
 using BugTracker.Domain;
+using BugTracker.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Infrastructure;
 
-public class BugTrackerDbContext : DbContext
+public class BugTrackerDbContext : DbContext, IBugTrackerDbContext
 {
     public BugTrackerDbContext(DbContextOptions<BugTrackerDbContext> options) : base(options)
     {

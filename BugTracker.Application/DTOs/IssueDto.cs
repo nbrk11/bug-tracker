@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using BugTracker.Domain;
 
 namespace BugTracker.Application.DTOs;
@@ -8,5 +9,6 @@ public class IssueDto
     public string Description { get; set; } = string.Empty;
     public IssueStatus Status { get; set; }
     public IssuePriority Priority { get; set; }
+    [JsonIgnore]
     public DateTimeOffset CreatedDate { get; init; }
 }

@@ -1,16 +1,15 @@
 using BugTracker.Application.Interfaces;
 using BugTracker.Application.DTOs;
 using Microsoft.EntityFrameworkCore;
-using BugTracker.Application;
 using BugTracker.Domain;
 
-namespace BugTracker.Infrastructure.Services;
+namespace BugTracker.Application.Services;
 
 public class ProjectsService : IProjectsService
 {
-    private BugTrackerDbContext _db;
+    private IBugTrackerDbContext _db;
 
-    public ProjectsService(BugTrackerDbContext db)
+    public ProjectsService(IBugTrackerDbContext db)
     {
         _db = db;
     }
@@ -68,7 +67,7 @@ public class ProjectsService : IProjectsService
         if (project is null)
             return ResponseWrapper<ProjectDto>.Fail($"Project with id {id} was not found");
 
-        if (projectPatch.Title != string.Empty)
+        if (projectPatch.Title is not null)
             project.Title = projectPatch.Title;
 
         await _db.SaveChangesAsync();

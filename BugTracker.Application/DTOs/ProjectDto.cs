@@ -2,6 +2,6 @@ namespace BugTracker.Application.DTOs;
 
 public class ProjectDto
 {
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; }
     public DateTimeOffset CreatedDate { get; set; }
 }

@@ -1,16 +1,16 @@
 using BugTracker.Application.DTOs;
 using BugTracker.Application.Queries;
+using BugTracker.Application.Interfaces;
 using BugTracker.Domain;
-using BugTracker.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace BugTracker.Application.Interfaces;
+namespace BugTracker.Application.Services;
 
 public class CommentsService : ICommentsService
 {
-    public readonly BugTrackerDbContext _db;
+    private readonly IBugTrackerDbContext _db;
 
-    public CommentsService(BugTrackerDbContext db)
+    public CommentsService(IBugTrackerDbContext db)
     {
         _db = db;
     }
@@ -49,8 +49,8 @@ public class CommentsService : ICommentsService
             .AsNoTracking()
             .Select(c => new CommentDto
             {
-                AuthorId = c.AuthorId ?? -1,
-                Content = c.Content
+                AuthorId = c.AuthorId,
+                Content = c.Content,
             })
             .ToListAsync();
 
@@ -64,8 +64,8 @@ public class CommentsService : ICommentsService
             .Where(c => c.Id == id)
             .Select(c => new CommentDto
             {
+                AuthorId = c.AuthorId,
                 Content = c.Content,
-                AuthorId = (int)c.AuthorId!
             })
             .FirstOrDefaultAsync();
 

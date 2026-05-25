@@ -1,17 +1,16 @@
-using BugTracker.Application;
 using BugTracker.Application.DTOs;
 using BugTracker.Application.Interfaces;
 using BugTracker.Application.Queries;
 using BugTracker.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace BugTracker.Infrastructure.Services;
+namespace BugTracker.Application.Services;
 
 public class IssuesService : IIssuesService
 {
-    private readonly BugTrackerDbContext _db;
+    private readonly IBugTrackerDbContext _db;
 
-    public IssuesService(BugTrackerDbContext db)
+    public IssuesService(IBugTrackerDbContext db)
     {
         _db = db;
     }
@@ -25,7 +24,6 @@ public class IssuesService : IIssuesService
             Description = issueDto.Description,
             Priority = issueDto.Priority,
             Status = issueDto.Status,
-            CreatedDate = issueDto.CreatedDate,
             Project = project
         };
 
@@ -79,10 +77,6 @@ public class IssuesService : IIssuesService
         var filteredIssues = _db.Issues.AsNoTracking();
         var result = new List<IssueDto>();
 
-        if (filter is null)
-            goto returnResult;
-
-
         if (filter.Status is not null)
             filteredIssues = filteredIssues.Where(i => i.Status == filter.Status);
 
@@ -95,7 +89,6 @@ public class IssuesService : IIssuesService
         if (filter.DateTo is not null)
             filteredIssues = filteredIssues.Where(i => filter.DateTo > i.CreatedDate);
 
-        returnResult:
         result = await filteredIssues
             .Select(i => new IssueDto
             {

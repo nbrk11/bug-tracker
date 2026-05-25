@@ -1,17 +1,16 @@
 using BugTracker.Domain;
-using BugTracker.Application;
 using BugTracker.Application.DTOs;
 using BugTracker.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BugTracker.Infrastructure.Services;
+namespace BugTracker.Application.Services;
 
 public class UsersService : IUsersService
 {
-    private readonly BugTrackerDbContext _db;
+    private readonly IBugTrackerDbContext _db;
 
 
-    public UsersService(BugTrackerDbContext db)
+    public UsersService(IBugTrackerDbContext db)
     {
         _db = db;
     }
@@ -82,7 +81,7 @@ public class UsersService : IUsersService
 
     public async Task<ResponseWrapper<UserDto>> UpdateAsync(UserDto userPatch, int id)
     {
-        var user = await _db.Users.Include(u => u.Comments).FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
 
         if (user is null)
             return ResponseWrapper<UserDto>.Fail($"No user with {id} was found.");
